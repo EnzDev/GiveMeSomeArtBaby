@@ -112,15 +112,23 @@ class DieArt:
         else:
             self.draw_alarm = None
             print("\nDone with seed '%s' (Size %s)" % (self.x, self.size))
-            filename = "randimg_%s_%s.jpg" % ("".join([_ for _ in self.x if _ in string.ascii_letters]), self.size)
-            self.image1.save(filename)  # Export da shit out
+            filename = "randimg_%s_%s" % ("".join([_ for _ in self.x if _ in string.ascii_letters]), self.size)
+            self.image1.save(filename+".jpg")  # Export da shit out
+            self.write_seed_name(filename)
             print("Total seconds elapsed : %s" % (datetime.datetime.now() - self.start).total_seconds())
             self.canvas.quit()
 
+    def write_seed_name(self, filename):
+        seedNameFile = open(filename + ".txt", 'w')
+        seedNameFile.write("%s\n" % self.x)
+        seedNameFile.write("%d\n" % self.size)
+        seedNameFile.flush()
+        seedNameFile.close()
+
 
 # Main program
-img_size = 2**7
-dontdraw=True
+img_size = 2**14
+dontdraw = True
 win = Tk()
 if dontdraw:
     win.wm_maxsize(1, 1)
