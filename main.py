@@ -55,7 +55,7 @@ class DieArt:
                  d_o_n_t_d_r_a_w=False):
         _ = math.log(size, 2)  # Little checkup
         assert _ == int(_)
-
+        print("Ready to create an Art of %d by %d with the seed %s" % (size, size, seed))
         self.start = datetime.datetime.now()
         x = seed
         self.x = x
