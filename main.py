@@ -1,30 +1,32 @@
 #!/usr/bin/python
 
-import random
-from tkinter import *
-import string
-
 # Utility functions
+import datetime
 import math
+import random
+import string
+from tkinter import *
 from PIL import ImageDraw, Image
+
+
+# Import the operators
+from Operators.Constant import Constant
+from Operators.Level import Level
+from Operators.Mix import Mix
+from Operators.Mod import Mod
+from Operators.Product import Product
+from Operators.Sin import Sin
+from Operators.Sum import Sum
+from Operators.Tent import Tent
+from Operators.Weel import Well
+from Operators.XY import VariableX, VariableY
 
 from utils import rgb
 
-# Import the operators
-from Constant import Constant
-from Level import Level
-from Mix import Mix
-from Mod import Mod
-from Product import Product
-from Sin import Sin
-from Sum import Sum
-from Tent import Tent
-from Weel import Well
-from xy import VariableX, VariableY
 
 operators = (VariableX, VariableY, Constant, Sum, Product, Mod, Sin, Tent, Well, Level, Mix)
 
-# We precompute those operators that have arity 0 and arity > 0
+# Separate ops with arity 0 and arity > 0
 operators0 = [op for op in operators if op.arity == 0]
 operators1 = [op for op in operators if op.arity > 0]
 
@@ -49,10 +51,12 @@ def generate(k=50):
 
 
 class DieArt:
-    def __init__(self, master, size=2**12, seed=''.join(random.choices(string.ascii_uppercase + string.digits, k=15))):
+    def __init__(self, master, size=2**12, seed=''.join(random.choices(string.printable, k=random.randint(5, 15))),
+                 d_o_n_t_d_r_a_w=False):
         _ = math.log(size, 2)  # Little checkup
         assert _ == int(_)
 
+        self.start = datetime.datetime.now()
         x = seed
         self.x = x
         master.title(x)
@@ -60,6 +64,7 @@ class DieArt:
         self.size = size
         self.canvas = Canvas(master, width=size, height=size)
         self.canvas.grid(row=0, column=0)
+        self.d_o_n_t_d_r_a_w = d_o_n_t_d_r_a_w
 
         self.image1 = Image.new("RGB", (size, size), (255, 255, 255))
         self.drawing = ImageDraw.Draw(self.image1)
@@ -67,10 +72,16 @@ class DieArt:
         b = Button(master, text='Give me some sugar !', command=self.redraw)
         b.grid(row=1, column=0)
         self.draw_alarm = None
+
+        self.art = None  # Init those vars here for PEP
+        self.d = None  # Init those vars here for PEP
+        self.y = None  # Init those vars here for PEP
+
         self.redraw()
 
     def redraw(self):
-        if self.draw_alarm: self.canvas.after_cancel(self.draw_alarm)
+        if self.draw_alarm:
+            self.canvas.after_cancel(self.draw_alarm)
         self.canvas.delete(ALL)
         self.art = generate(random.randrange(20, 150))
         self.d = 1  # *4*4*4  # current square size
@@ -86,26 +97,35 @@ class DieArt:
                 u = 2 * float(x + self.d / 2) / self.size - 1.0
                 v = 2 * float(self.y + self.d / 2) / self.size - 1.0
                 (r, g, b) = self.art.eval(u, v)
-                self.canvas.create_rectangle(x,
+                if not self.d_o_n_t_d_r_a_w:
+                    self.canvas.create_rectangle(x,
                                              self.y,
                                              x + self.d,
                                              self.y + self.d,
                                              width=0, fill=rgb(r, g, b))
                 self.drawing.point((x,
                                     self.y),
-                                   rgb(r, g, b))
+                                    rgb(r, g, b))
             self.y += self.d
             print("\r" + str((self.y * 100) / self.size) + "%", end='')
             self.draw_alarm = self.canvas.after(1, self.draw)
         else:
             self.draw_alarm = None
+            print("\nDone with seed '%s' (Size %s)" % (self.x, self.size))
             filename = "randimg_%s_%s.jpg" % ("".join([_ for _ in self.x if _ in string.ascii_letters]), self.size)
             self.image1.save(filename)  # Export da shit out
+            print("Total seconds elapsed : %s" % (datetime.datetime.now() - self.start).total_seconds())
+            self.canvas.quit()
 
 
 # Main program
+img_size = 2**7
+dontdraw=True
 win = Tk()
-win.wm_maxsize(512, 512)
-arg = DieArt(win, size=512)
+if dontdraw:
+    win.wm_maxsize(1, 1)
+else:
+    win.wm_maxsize(img_size, img_size)
+arg = DieArt(win, seed='D(9t4', size=img_size, d_o_n_t_d_r_a_w=dontdraw)
 
 win.mainloop()
