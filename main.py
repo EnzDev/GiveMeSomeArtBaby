@@ -126,6 +126,6 @@ if dontdraw:
     win.wm_maxsize(1, 1)
 else:
     win.wm_maxsize(img_size, img_size)
-arg = DieArt(win, seed='D(9t4', size=img_size, d_o_n_t_d_r_a_w=dontdraw)
+arg = DieArt(win, size=img_size, d_o_n_t_d_r_a_w=dontdraw)
 
 win.mainloop()
