@@ -19,12 +19,13 @@ from Operators.Sin import Sin
 from Operators.Sum import Sum
 from Operators.Tent import Tent
 from Operators.Weel import Well
+from Operators.Wavy import Wavy
 from Operators.XY import VariableX, VariableY
 
 from utils import rgb
 
 
-operators = (VariableX, VariableY, Constant, Sum, Product, Mod, Sin, Tent, Well, Level, Mix)
+operators = (VariableX, VariableY, Constant, Sum, Product, Mod, Sin, Tent, Well, Wavy, Level, Mix)
 
 # Separate ops with arity 0 and arity > 0
 operators0 = [op for op in operators if op.arity == 0]
@@ -52,7 +53,7 @@ def generate(k=50):
 
 class DieArt:
     def __init__(self, master, size=2**12, seed=''.join(random.choices(string.printable, k=random.randint(5, 15))),
-                 d_o_n_t_d_r_a_w=False):
+                 dont_draw=False):
         _ = math.log(size, 2)  # Little checkup
         assert _ == int(_)
         print("Ready to create an Art of %d by %d with the seed %s" % (size, size, seed))
@@ -64,7 +65,7 @@ class DieArt:
         self.size = size
         self.canvas = Canvas(master, width=size, height=size)
         self.canvas.grid(row=0, column=0)
-        self.d_o_n_t_d_r_a_w = d_o_n_t_d_r_a_w
+        self.d_o_n_t_d_r_a_w = dont_draw
 
         self.image1 = Image.new("RGB", (size, size), (255, 255, 255))
         self.drawing = ImageDraw.Draw(self.image1)
@@ -127,13 +128,14 @@ class DieArt:
 
 
 # Main program
-img_size = 2**14
-dontdraw = True
+img_size = 2**13
+dont_draw_no = True
+
 win = Tk()
-if dontdraw:
+if dont_draw_no:
     win.wm_maxsize(1, 1)
 else:
     win.wm_maxsize(img_size, img_size)
-arg = DieArt(win, size=img_size, d_o_n_t_d_r_a_w=dontdraw)
+arg = DieArt(win, size=img_size, dont_draw=dont_draw_no)
 
 win.mainloop()
