@@ -4,7 +4,7 @@ Give Me Some Art Baby
 This repository is a Mathematical Python Art project.  
 My aim was to make some generated *art* with as little math as possible  
 
-It was built to run with PyPy (Python 3) allowing better performance for massive generation and very high quality rendering (Like 2^15 pixel square).
+It was build to run with PyPy (Python 3) allowing better performance for massive generation and very high quality rendering (Like 2^15 pixel square).
 
 I also built a Twitter Bot [@GiveMeSomeArts](https://twitter.com/GiveMeSomeArts) and an [Angular WebSite](http://givemesomeartbaby.ml/) (with automatic generation).
 
