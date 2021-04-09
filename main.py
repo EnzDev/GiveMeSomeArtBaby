@@ -4,7 +4,7 @@ import random
 
 if __name__ == '__main__':
     random.seed(None)
-    generated = Art(size=2**8)
+    generated = Art(size=2**11)
     print("Making art with the seed %s" % repr(generated.x))
     art_data = generated.redraw()
     print("saved to %s (Size %s)\nSEED: %s" % (art_data['filename'], art_data['size'], repr(art_data['seed'])))

@@ -8,7 +8,6 @@ import string
 from tkinter import *
 from PIL import ImageDraw, Image
 
-
 # Import the operators
 from Operators.Constant import Constant
 from Operators.Level import Level
@@ -23,7 +22,6 @@ from Operators.Wavy import Wavy
 from Operators.XY import VariableX, VariableY
 
 from utils import rgb
-
 
 operators = (VariableX, VariableY, Constant, Sum, Product, Mod, Sin, Tent, Well, Wavy, Level, Mix)
 
@@ -52,7 +50,7 @@ def generate(k=50):
 
 
 class Art:
-    def __init__(self, size=2**9, seed=None):
+    def __init__(self, size=2 ** 9, seed=None):
         _ = math.log(size, 2)  # Little checkup
         assert _ == int(_)
 
@@ -92,13 +90,13 @@ class Art:
                 (r, g, b) = self.art.eval(u, v)
                 self.drawing.point((x,
                                     self.y),
-                                    rgb(r, g, b))
+                                   rgb(r, g, b))
             self.y += self.d
             print("\r" + str((self.y * 100) / self.size) + "%", end='')
         else:
             print("\nDone with seed '%s' (Size %s)" % (self.x, self.size))
             filename = "randimg_%s_%s" % ("".join([_ for _ in self.x if _ in string.ascii_letters]), self.size)
-            self.image1.save(filename+".jpg")  # Export da shit out
+            self.image1.save(filename + ".jpg")  # Export da shit out
             self.write_seed_name(filename)
             print("Total seconds elapsed : %s" % (datetime.datetime.now() - self.start).total_seconds())
             return {
@@ -113,4 +111,3 @@ class Art:
         seedNameFile.write("%d\n" % self.size)
         seedNameFile.flush()
         seedNameFile.close()
-
